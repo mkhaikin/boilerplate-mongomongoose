@@ -88,14 +88,23 @@ const removeById = (personId, done) => {
 
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
-
-  done(null /*, data*/);
+	Person.remove({name:nameToRemove}, (err,result)=>{
+		if(err) return console.log(err);
+    	done(null, result);
+	})
 };
 
 const queryChain = (done) => {
   const foodToSearch = "burrito";
-
-  done(null /*, data*/);
+	Person
+	.find({favoriteFoods:foodToSearch}).
+	sort('name').
+  limit(2).
+  select('name').
+  exec((err,result)=>{
+		if(err) console.log(err);
+		done(null, result)
+	});
 };
 
 /** **Well Done !!**
